@@ -17,56 +17,70 @@ export const HORARIOS = [
 /** Deja solo dígitos: "(632) 123-45 67" -> "6321234567" */
 const soloDigitos = (v: string) => v.replace(/\D/g, "");
 
-export const inscripcionSchema = z.object({
-  tutor: z
-    .string()
-    .trim()
-    .min(2, "Escribe el nombre del padre, madre o tutor.")
-    .max(80, "El nombre es demasiado largo."),
+/** "" (select sin elegir) -> undefined, para que .optional() lo acepte. */
+const vacioAIndefinido = (v: unknown) => (v === "" ? undefined : v);
 
-  telefono: z
-    .string()
-    .transform(soloDigitos)
-    .refine((v) => v.length === 10, {
-      message: "El teléfono debe tener 10 dígitos, con lada. Ejemplo: 632 123 4567",
-    }),
+export const inscripcionSchema = z.object(
+  {
+    tutor: z
+      .string({ message: "Escribe el nombre del padre, madre o tutor." })
+      .trim()
+      .min(2, "Escribe el nombre del padre, madre o tutor.")
+      .max(80, "El nombre es demasiado largo."),
 
-  correo: z
-    .string()
-    .trim()
-    .pipe(z.email("Escribe un correo válido. Ejemplo: nombre@correo.com")),
+    telefono: z
+      .string({
+        message: "El teléfono debe tener 10 dígitos, con lada. Ejemplo: 632 123 4567",
+      })
+      .transform(soloDigitos)
+      .refine((v) => v.length === 10, {
+        message: "El teléfono debe tener 10 dígitos, con lada. Ejemplo: 632 123 4567",
+      }),
 
-  nino: z
-    .string()
-    .trim()
-    .min(2, "Escribe el nombre de la niña o el niño.")
-    .max(80, "El nombre es demasiado largo."),
+    correo: z
+      .string({ message: "Escribe un correo válido. Ejemplo: nombre@correo.com" })
+      .trim()
+      .pipe(z.email("Escribe un correo válido. Ejemplo: nombre@correo.com")),
 
-  edad: z
-    .number({ message: "Selecciona la edad." })
-    .int()
-    .min(4, "Damos clases a partir de los 4 años.")
-    .max(12, "Damos clases hasta los 12 años."),
+    nino: z
+      .string({ message: "Escribe el nombre de la niña o el niño." })
+      .trim()
+      .min(2, "Escribe el nombre de la niña o el niño.")
+      .max(80, "El nombre es demasiado largo."),
 
-  experiencia: z
-    .enum(["nada", "poco", "si"])
-    .optional(),
+    edad: z
+      .number({ message: "Selecciona la edad." })
+      .int("Selecciona una edad válida.")
+      .min(4, "Damos clases a partir de los 4 años.")
+      .max(12, "Damos clases hasta los 12 años."),
 
-  horario: z
-    .enum(["manana", "tarde", "sabado"])
-    .optional(),
+    experiencia: z.preprocess(
+      vacioAIndefinido,
+      z
+        .enum(["nada", "poco", "si"], { message: "Selecciona una opción válida." })
+        .optional()
+    ),
 
-  mensaje: z
-    .string()
-    .trim()
-    .max(1000, "El mensaje es demasiado largo.")
-    .optional(),
+    horario: z.preprocess(
+      vacioAIndefinido,
+      z
+        .enum(["manana", "tarde", "sabado"], { message: "Selecciona una opción válida." })
+        .optional()
+    ),
 
-  privacidad: z
-    .boolean()
-    .refine((v) => v === true, {
-      message: "Necesitamos tu consentimiento para poder contactarte.",
-    }),
-});
+    mensaje: z
+      .string({ message: "El mensaje es demasiado largo." })
+      .trim()
+      .max(1000, "El mensaje es demasiado largo.")
+      .optional(),
+
+    privacidad: z
+      .boolean({ message: "Necesitamos tu consentimiento para poder contactarte." })
+      .refine((v) => v === true, {
+        message: "Necesitamos tu consentimiento para poder contactarte.",
+      }),
+  },
+  { message: "Revisa los datos del formulario." }
+);
 
 export type Inscripcion = z.infer<typeof inscripcionSchema>;

@@ -76,4 +76,59 @@ describe("inscripcionSchema", () => {
     const r = inscripcionSchema.safeParse({ ...valido, mensaje: "a".repeat(1001) });
     expect(r.success).toBe(false);
   });
+
+  it("acepta un mensaje de exactamente 1000 caracteres", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, mensaje: "a".repeat(1000) });
+    expect(r.success).toBe(true);
+  });
+
+  it("acepta las edades límite 4 y 12", () => {
+    expect(inscripcionSchema.safeParse({ ...valido, edad: 4 }).success).toBe(true);
+    expect(inscripcionSchema.safeParse({ ...valido, edad: 12 }).success).toBe(true);
+  });
+
+  it("rechaza la edad enviada como texto", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, edad: "7" });
+    expect(r.success).toBe(false);
+  });
+
+  it("no deja escapar mensajes de error en inglés al faltar la privacidad", () => {
+    const { privacidad: _privacidad, ...sinPrivacidad } = valido;
+    const r = inscripcionSchema.safeParse(sinPrivacidad);
+    expect(r.success).toBe(false);
+    if (!r.success) {
+      for (const issue of r.error.issues) {
+        expect(issue.message).not.toMatch(/invalid|expected|required/i);
+      }
+    }
+  });
+
+  it("acepta experiencia vacía y la convierte en undefined", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, experiencia: "" });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.experiencia).toBeUndefined();
+  });
+
+  it("acepta horario vacío y lo convierte en undefined", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, horario: "" });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.horario).toBeUndefined();
+  });
+
+  it("acepta experiencia y horario ausentes (undefined)", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, experiencia: undefined, horario: undefined });
+    expect(r.success).toBe(true);
+    if (r.success) {
+      expect(r.data.experiencia).toBeUndefined();
+      expect(r.data.horario).toBeUndefined();
+    }
+  });
+
+  it("rechaza un valor de experiencia que no existe en el catálogo", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, experiencia: "basura" });
+    expect(r.success).toBe(false);
+    if (!r.success) {
+      expect(r.error.issues[0].message).toMatch(/opción válida/i);
+    }
+  });
 });

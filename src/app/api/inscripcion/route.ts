@@ -32,12 +32,12 @@ export async function POST(request: Request) {
   const { website, iniciadoEn, ...campos } = cuerpo as Record<string, unknown>;
 
   // Honeypot: campo oculto que solo un bot llena.
-  if (typeof website === "string" && website.length > 0) {
+  if (website !== undefined && website !== "") {
     return malo("No pudimos procesar el envío.");
   }
 
-  // Control de tiempo. Ausente o no numérico se trata como sospechoso.
-  if (typeof iniciadoEn !== "number" || Date.now() - iniciadoEn < MS_MINIMOS) {
+  // Control de tiempo. Ausente, no numérico o no finito se trata como sospechoso.
+  if (!Number.isFinite(iniciadoEn) || Date.now() - (iniciadoEn as number) < MS_MINIMOS) {
     return malo("Tómate un momento para revisar los datos y vuelve a enviar.");
   }
 
@@ -78,7 +78,8 @@ export async function POST(request: Request) {
     return noDisponible();
   }
 
-  if (!respuesta.ok) {
+  const cuerpoW3 = await respuesta.json().catch(() => null);
+  if (!respuesta.ok || (cuerpoW3 as { success?: unknown } | null)?.success !== true) {
     return noDisponible();
   }
 

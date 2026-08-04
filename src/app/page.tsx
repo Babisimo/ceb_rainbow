@@ -1,11 +1,25 @@
+import { Hero } from "@/components/sections/Hero";
+import { Beneficios } from "@/components/sections/Beneficios";
+import { Programa } from "@/components/sections/Programa";
+import { Metodo } from "@/components/sections/Metodo";
+import { Nosotros } from "@/components/sections/Nosotros";
+import { Testimonios } from "@/components/sections/Testimonios";
+import { Preguntas } from "@/components/sections/Preguntas";
+import { Inscripcion } from "@/components/sections/Inscripcion";
+import { Contacto } from "@/components/sections/Contacto";
+
 export default function Home() {
   return (
-    <main className="p-12">
-      <h1 className="text-5xl text-teal">Prueba de tokens</h1>
-      <p className="mt-4 font-mano text-2xl">Fuente manuscrita</p>
-      <button className="mt-6 rounded-carta border-2 border-tinta bg-ambar px-6 py-3 sombra-dura">
-        Botón de prueba
-      </button>
+    <main id="contenido">
+      <Hero />
+      <Beneficios />
+      <Programa />
+      <Metodo />
+      <Nosotros />
+      <Testimonios />
+      <Preguntas />
+      <Inscripcion />
+      <Contacto />
     </main>
   );
 }

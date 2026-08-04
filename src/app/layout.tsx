@@ -6,9 +6,19 @@ import { BotonWhatsApp } from "@/components/layout/BotonWhatsApp";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Inglés para niños en Magdalena de Kino",
+  title: {
+    default: "Inglés para niños en Magdalena de Kino",
+    template: "%s · Inglés para niños",
+  },
   description:
-    "Clases de inglés para niñas y niños de 4 a 12 años en Magdalena de Kino, Sonora. Grupos pequeños y maestras certificadas.",
+    "Clases de inglés para niñas y niños de 4 a 12 años en Magdalena de Kino, Sonora. Grupos pequeños, maestras certificadas y clase de prueba sin costo.",
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    title: "Inglés para niños en Magdalena de Kino",
+    description:
+      "Clases de inglés para niñas y niños de 4 a 12 años. Grupos pequeños en Magdalena de Kino, Sonora.",
+  },
 };
 
 export default function RootLayout({

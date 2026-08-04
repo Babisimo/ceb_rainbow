@@ -1,11 +1,15 @@
 import Link from "next/link";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ReactNode,
+} from "react";
 
 type Variante = "primario" | "secundario" | "fantasma";
 
 const base =
   "inline-flex min-h-[48px] items-center justify-center gap-2 rounded-carta " +
-  "border-2 border-tinta px-6 py-3 font-titulo text-base font-600 " +
+  "border-2 border-tinta px-6 py-3 font-titulo text-base font-semibold " +
   "transition-transform duration-150 active:translate-x-[2px] active:translate-y-[2px] " +
   "motion-reduce:transition-none";
 
@@ -16,33 +20,42 @@ const variantes: Record<Variante, string> = {
   fantasma: "bg-crema text-tinta sombra-dura-sm hover:bg-maiz",
 };
 
-type Props = {
+type Base = {
   variante?: Variante;
-  href?: string;
   children: ReactNode;
-} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className">;
+};
 
-export function Boton({
-  variante = "primario",
-  href,
-  children,
-  ...rest
-}: Props) {
+type PropsBoton = Base &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & {
+    href?: undefined;
+  };
+
+type PropsEnlace = Base &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "className"> & {
+    href: string;
+  };
+
+type Props = PropsBoton | PropsEnlace;
+
+export function Boton({ variante = "primario", children, ...props }: Props) {
   const clases = `${base} ${variantes[variante]}`;
 
-  if (href) {
+  if (props.href !== undefined) {
+    const { href, ...rest } = props;
     const externo = href.startsWith("http");
     return (
       <Link
         href={href}
         className={clases}
         {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        {...rest}
       >
         {children}
       </Link>
     );
   }
 
+  const { href: _href, ...rest } = props;
   return (
     <button className={clases} {...rest}>
       {children}

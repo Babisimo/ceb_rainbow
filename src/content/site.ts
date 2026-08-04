@@ -188,6 +188,41 @@ export const site = {
       "Llena los datos y te contactamos para agendar una clase de prueba. Contestamos el mismo día.",
   },
 
+  formulario: {
+    etiquetas: {
+      tutor: "Nombre del padre, madre o tutor",
+      telefono: "Teléfono o WhatsApp",
+      correo: "Correo electrónico",
+      nino: "Nombre de la niña o el niño",
+      edad: "Edad",
+      experiencia: "¿Ha estudiado inglés antes?",
+      horario: "Horario que les acomoda",
+      mensaje: "¿Algo que debamos saber?",
+    },
+    placeholders: {
+      telefono: "632 123 4567",
+      correo: "nombre@correo.com",
+    },
+    opciones: {
+      selecciona: "Selecciona",
+      sinEspecificar: "Sin especificar",
+      anios: "años",
+    },
+    privacidad: {
+      texto: "Acepto que usen mis datos para contactarme sobre las clases. Leí el",
+      enlace: "aviso de privacidad",
+    },
+    botones: {
+      enviar: "Enviar solicitud",
+      enviando: "Enviando…",
+    },
+    errores: {
+      generico: "No pudimos enviar tu solicitud.",
+      red: "No pudimos enviar tu solicitud. Revisa tu conexión o escríbenos por WhatsApp.",
+    },
+    obligatorios: "Los campos con * son obligatorios.",
+  },
+
   contacto: {
     titulo: "Dónde estamos",
     etiquetaDireccion: "Dirección",

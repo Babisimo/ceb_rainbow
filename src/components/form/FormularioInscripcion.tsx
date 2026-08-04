@@ -12,6 +12,7 @@ import {
   inscripcionSchema,
   type Inscripcion,
 } from "@/lib/schema";
+import { site } from "@/content/site";
 import { Campo, controlBase } from "@/components/ui/Campo";
 import { Boton } from "@/components/ui/Boton";
 
@@ -27,6 +28,7 @@ export function FormularioInscripcion() {
   const router = useRouter();
   const iniciadoEn = useRef(Date.now());
   const [errorEnvio, setErrorEnvio] = useState<string | null>(null);
+  const { formulario } = site;
 
   const {
     register,
@@ -51,14 +53,12 @@ export function FormularioInscripcion() {
       });
       const cuerpo = await res.json();
       if (!res.ok || !cuerpo.ok) {
-        setErrorEnvio(cuerpo.error ?? "No pudimos enviar tu solicitud.");
+        setErrorEnvio(cuerpo.error ?? formulario.errores.generico);
         return;
       }
       router.push("/gracias");
     } catch {
-      setErrorEnvio(
-        "No pudimos enviar tu solicitud. Revisa tu conexión o escríbenos por WhatsApp.",
-      );
+      setErrorEnvio(formulario.errores.red);
     }
   });
 
@@ -77,27 +77,27 @@ export function FormularioInscripcion() {
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <Campo id="tutor" etiqueta="Nombre del padre, madre o tutor" requerido error={errors.tutor?.message}>
+      <Campo id="tutor" etiqueta={formulario.etiquetas.tutor} requerido error={errors.tutor?.message}>
         <input type="text" autoComplete="name" {...props("tutor")} {...register("tutor")} />
       </Campo>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Campo id="telefono" etiqueta="Teléfono o WhatsApp" requerido error={errors.telefono?.message}>
+        <Campo id="telefono" etiqueta={formulario.etiquetas.telefono} requerido error={errors.telefono?.message}>
           <input
             type="tel"
             inputMode="numeric"
             autoComplete="tel"
-            placeholder="632 123 4567"
+            placeholder={formulario.placeholders.telefono}
             {...props("telefono")}
             {...register("telefono")}
           />
         </Campo>
 
-        <Campo id="correo" etiqueta="Correo electrónico" requerido error={errors.correo?.message}>
+        <Campo id="correo" etiqueta={formulario.etiquetas.correo} requerido error={errors.correo?.message}>
           <input
             type="email"
             autoComplete="email"
-            placeholder="nombre@correo.com"
+            placeholder={formulario.placeholders.correo}
             {...props("correo")}
             {...register("correo")}
           />
@@ -105,18 +105,18 @@ export function FormularioInscripcion() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Campo id="nino" etiqueta="Nombre de la niña o el niño" requerido error={errors.nino?.message}>
+        <Campo id="nino" etiqueta={formulario.etiquetas.nino} requerido error={errors.nino?.message}>
           <input type="text" {...props("nino")} {...register("nino")} />
         </Campo>
 
-        <Campo id="edad" etiqueta="Edad" requerido error={errors.edad?.message}>
+        <Campo id="edad" etiqueta={formulario.etiquetas.edad} requerido error={errors.edad?.message}>
           <select {...props("edad")} {...register("edad", { valueAsNumber: true })} defaultValue="">
             <option value="" disabled>
-              Selecciona
+              {formulario.opciones.selecciona}
             </option>
             {EDADES.map((e) => (
               <option key={e} value={e}>
-                {e} años
+                {e} {formulario.opciones.anios}
               </option>
             ))}
           </select>
@@ -124,9 +124,9 @@ export function FormularioInscripcion() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Campo id="experiencia" etiqueta="¿Ha estudiado inglés antes?" error={errors.experiencia?.message}>
+        <Campo id="experiencia" etiqueta={formulario.etiquetas.experiencia} error={errors.experiencia?.message}>
           <select {...props("experiencia")} {...register("experiencia")} defaultValue="">
-            <option value="">Sin especificar</option>
+            <option value="">{formulario.opciones.sinEspecificar}</option>
             {EXPERIENCIAS.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -135,9 +135,9 @@ export function FormularioInscripcion() {
           </select>
         </Campo>
 
-        <Campo id="horario" etiqueta="Horario que les acomoda" error={errors.horario?.message}>
+        <Campo id="horario" etiqueta={formulario.etiquetas.horario} error={errors.horario?.message}>
           <select {...props("horario")} {...register("horario")} defaultValue="">
-            <option value="">Sin especificar</option>
+            <option value="">{formulario.opciones.sinEspecificar}</option>
             {HORARIOS.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -147,7 +147,7 @@ export function FormularioInscripcion() {
         </Campo>
       </div>
 
-      <Campo id="mensaje" etiqueta="¿Algo que debamos saber?" error={errors.mensaje?.message}>
+      <Campo id="mensaje" etiqueta={formulario.etiquetas.mensaje} error={errors.mensaje?.message}>
         <textarea rows={4} {...props("mensaje")} {...register("mensaje")} />
       </Campo>
 
@@ -162,9 +162,15 @@ export function FormularioInscripcion() {
             {...register("privacidad")}
           />
           <span>
-            Acepto que usen mis datos para contactarme sobre las clases. Leí el{" "}
-            <a href="/aviso-de-privacidad" target="_blank" className="underline underline-offset-4">
-              aviso de privacidad
+            {formulario.privacidad.texto}{" "}
+            <a
+              href="/aviso-de-privacidad"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {formulario.privacidad.enlace}
             </a>
             .<span aria-hidden="true"> *</span>
           </span>
@@ -183,12 +189,10 @@ export function FormularioInscripcion() {
       )}
 
       <Boton type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Enviando…" : "Enviar solicitud"}
+        {isSubmitting ? formulario.botones.enviando : formulario.botones.enviar}
       </Boton>
 
-      <p className="text-sm">
-        Los campos con <span aria-hidden="true">*</span> son obligatorios.
-      </p>
+      <p className="text-sm">{formulario.obligatorios}</p>
     </form>
   );
 }

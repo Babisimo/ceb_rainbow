@@ -32,4 +32,4 @@ export function Campo({ id, etiqueta, error, requerido, children }: Props) {
 /** Clases compartidas por input, select y textarea. */
 export const controlBase =
   "mt-1 block w-full min-h-[48px] rounded-carta border-2 border-tinta bg-crema px-4 py-3 " +
-  "text-base placeholder:text-tinta/50 aria-[invalid=true]:border-4";
+  "text-base placeholder:text-tinta/70 aria-[invalid=true]:border-4";

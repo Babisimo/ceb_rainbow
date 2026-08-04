@@ -91,10 +91,18 @@ describe("POST /api/inscripcion", () => {
     await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
-  it("rechaza el honeypot cuando no es texto (número, objeto, etc.)", async () => {
+  it("rechaza el honeypot cuando es un número", async () => {
     const res = await POST(pedir({ ...valido, website: 123 }));
     expect(res.status).toBe(400);
     expect(globalThis.fetch).not.toHaveBeenCalled();
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
+  });
+
+  it("rechaza el honeypot cuando es un objeto", async () => {
+    const res = await POST(pedir({ ...valido, website: {} }));
+    expect(res.status).toBe(400);
+    expect(globalThis.fetch).not.toHaveBeenCalled();
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
   it("rechaza envíos hechos en menos de 3 segundos", async () => {
@@ -109,27 +117,32 @@ describe("POST /api/inscripcion", () => {
     const res = await POST(pedir(sinIniciadoEn));
     expect(res.status).toBe(400);
     expect(globalThis.fetch).not.toHaveBeenCalled();
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
   it("rechaza cuando iniciadoEn no es numérico", async () => {
     const res = await POST(pedir({ ...valido, iniciadoEn: "hace un rato" }));
     expect(res.status).toBe(400);
     expect(globalThis.fetch).not.toHaveBeenCalled();
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
   it("rechaza un cuerpo que no es JSON", async () => {
     const res = await POST(pedirCrudo("no soy json"));
     expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
   it("rechaza un cuerpo JSON nulo sin lanzar", async () => {
     const res = await POST(pedirCrudo("null"));
     expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
   it("rechaza un cuerpo JSON que es un arreglo sin lanzar", async () => {
     const res = await POST(pedirCrudo("[1,2,3]"));
     expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
   it("responde 502 si Web3Forms falla con un error HTTP", async () => {

@@ -190,6 +190,10 @@ export const site = {
 
   contacto: {
     titulo: "Dónde estamos",
+    etiquetaDireccion: "Dirección",
+    etiquetaTelefono: "Teléfono",
+    etiquetaCorreo: "Correo",
+    etiquetaHorario: "Horario",
   },
 
   privacidad: {

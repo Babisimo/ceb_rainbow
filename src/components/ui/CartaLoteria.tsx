@@ -22,15 +22,17 @@ type Props = {
 };
 
 export function CartaLoteria({ numero, es, en, figura, color }: Props) {
-  const [volteada, setVolteada] = useState(false);
+  const [fijada, setFijada] = useState(false);
+  const [encima, setEncima] = useState(false);
+  const volteada = fijada || encima;
 
   return (
     <button
       type="button"
-      aria-pressed={volteada}
-      onClick={() => setVolteada((v) => !v)}
-      onMouseEnter={() => setVolteada(true)}
-      onMouseLeave={() => setVolteada(false)}
+      aria-pressed={fijada}
+      onClick={() => setFijada((v) => !v)}
+      onMouseEnter={() => setEncima(true)}
+      onMouseLeave={() => setEncima(false)}
       className="group relative block aspect-[3/4] w-full rounded-carta border-2 border-tinta sombra-dura focus-visible:outline-3"
     >
       {/* Cara: español */}

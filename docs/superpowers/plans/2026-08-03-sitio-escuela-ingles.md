@@ -1034,7 +1034,7 @@ git commit -m "feat: endpoint de inscripción con validación y anti-spam"
 - Produces:
   - `<Boton variante="primario" | "secundario" | "fantasma" href?={string} {...ButtonHTMLAttributes}>` — renders `<a>` when `href` is present, otherwise `<button>`
   - `<Seccion id?={string} fondo="crema" | "maiz" | "menta" | "teal" titulo?={string} eyebrow?={string}>`
-  - `<Tarjeta color?={string}>` — bordered card with hard shadow
+  - `<Tarjeta className?={string}>` — bordered card with hard shadow. Takes `className` (sections need `h-full` for grid alignment), not a color prop.
   - `urlWhatsApp(mensaje?: string): string`
 
 - [ ] **Step 1: Write the WhatsApp helper**
@@ -1071,7 +1071,7 @@ type Variante = "primario" | "secundario" | "fantasma";
 
 const base =
   "inline-flex min-h-[48px] items-center justify-center gap-2 rounded-carta " +
-  "border-2 border-tinta px-6 py-3 font-titulo text-base font-600 " +
+  "border-2 border-tinta px-6 py-3 font-titulo text-base font-semibold " +
   "transition-transform duration-150 active:translate-x-[2px] active:translate-y-[2px] " +
   "motion-reduce:transition-none";
 
@@ -1227,7 +1227,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b-2 border-tinta bg-teal text-crema">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
-        <Link href="/" className="font-titulo text-lg font-700 sm:text-xl">
+        <Link href="/" className="font-titulo text-lg font-bold sm:text-xl">
           {site.escuela.nombre}
         </Link>
 
@@ -1271,12 +1271,12 @@ export function Footer() {
     <footer className="border-t-2 border-tinta bg-teal px-5 py-12 text-crema sm:px-8">
       <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
         <div>
-          <p className="font-titulo text-xl font-700">{escuela.nombre}</p>
+          <p className="font-titulo text-xl font-bold">{escuela.nombre}</p>
           <p className="mt-2">{escuela.ciudad}</p>
         </div>
 
         <div>
-          <h2 className="font-titulo text-lg font-600">Contacto</h2>
+          <h2 className="font-titulo text-lg font-semibold">Contacto</h2>
           <ul className="mt-2 space-y-1">
             <li>{escuela.direccion}</li>
             <li>Tel. {escuela.telefono}</li>
@@ -1286,7 +1286,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="font-titulo text-lg font-600">Redes</h2>
+          <h2 className="font-titulo text-lg font-semibold">Redes</h2>
           <ul className="mt-2 space-y-1">
             <li>Facebook: {escuela.facebook}</li>
             <li>Instagram: {escuela.instagram}</li>
@@ -1489,11 +1489,11 @@ export function CartaLoteria({ numero, es, en, figura, color }: Props) {
           volteada ? "opacity-0" : "opacity-100"
         }`}
       >
-        <span className="absolute left-2 top-1 font-titulo text-sm font-700 text-tinta">
+        <span className="absolute left-2 top-1 font-titulo text-sm font-bold text-tinta">
           {numero}
         </span>
         <FiguraLoteria nombre={figura} />
-        <span className="absolute inset-x-0 bottom-0 rounded-b-[calc(var(--radius-carta)-2px)] border-t-2 border-tinta bg-crema px-1 py-1.5 font-titulo text-sm font-600 text-tinta">
+        <span className="absolute inset-x-0 bottom-0 rounded-b-[calc(var(--radius-carta)-2px)] border-t-2 border-tinta bg-crema px-1 py-1.5 font-titulo text-sm font-semibold text-tinta">
           {es}
         </span>
       </span>
@@ -1504,7 +1504,7 @@ export function CartaLoteria({ numero, es, en, figura, color }: Props) {
           volteada ? "opacity-100" : "opacity-0"
         }`}
       >
-        <span className="font-titulo text-2xl font-700 text-tinta">{en}</span>
+        <span className="font-titulo text-2xl font-bold text-tinta">{en}</span>
       </span>
     </button>
   );
@@ -1602,7 +1602,7 @@ export function Hero() {
             {hero.datos.map((d) => (
               <div key={d.etiqueta}>
                 <dt className="sr-only">{d.etiqueta}</dt>
-                <dd className="font-titulo text-3xl font-700 text-teal">
+                <dd className="font-titulo text-3xl font-bold text-teal">
                   {d.valor}
                 </dd>
                 <p className="text-sm">{d.etiqueta}</p>
@@ -1725,7 +1725,7 @@ export function Metodo() {
             <Tarjeta className="h-full">
               <span
                 aria-hidden="true"
-                className="font-titulo text-3xl font-700 text-teal"
+                className="font-titulo text-3xl font-bold text-teal"
               >
                 {i + 1}
               </span>
@@ -1820,7 +1820,7 @@ export function Preguntas() {
         {faq.items.map((f) => (
           <li key={f.pregunta}>
             <details className="group rounded-carta border-2 border-tinta bg-crema sombra-dura open:bg-maiz">
-              <summary className="cursor-pointer list-none px-6 py-4 font-titulo text-lg font-600 marker:hidden">
+              <summary className="cursor-pointer list-none px-6 py-4 font-titulo text-lg font-semibold marker:hidden">
                 <span className="flex items-center justify-between gap-4">
                   {f.pregunta}
                   <span
@@ -1864,20 +1864,20 @@ export function Contacto() {
         <Tarjeta>
           <dl className="space-y-3">
             <div>
-              <dt className="font-titulo font-600">Dirección</dt>
+              <dt className="font-titulo font-semibold">Dirección</dt>
               <dd>{escuela.direccion}</dd>
               <dd>{escuela.ciudad}</dd>
             </div>
             <div>
-              <dt className="font-titulo font-600">Teléfono</dt>
+              <dt className="font-titulo font-semibold">Teléfono</dt>
               <dd>{escuela.telefono}</dd>
             </div>
             <div>
-              <dt className="font-titulo font-600">Correo</dt>
+              <dt className="font-titulo font-semibold">Correo</dt>
               <dd>{escuela.correo}</dd>
             </div>
             <div>
-              <dt className="font-titulo font-600">Horario</dt>
+              <dt className="font-titulo font-semibold">Horario</dt>
               <dd>{escuela.horarios}</dd>
             </div>
           </dl>
@@ -1946,7 +1946,7 @@ type Props = {
 export function Campo({ id, etiqueta, error, requerido, children }: Props) {
   return (
     <div>
-      <label htmlFor={id} className="block font-titulo font-600">
+      <label htmlFor={id} className="block font-titulo font-semibold">
         {etiqueta}
         {requerido && (
           <span className="text-tinta" aria-hidden="true">
@@ -1956,7 +1956,7 @@ export function Campo({ id, etiqueta, error, requerido, children }: Props) {
       </label>
       {children}
       {error && (
-        <p id={`${id}-error`} role="alert" className="mt-1 text-sm font-600">
+        <p id={`${id}-error`} role="alert" className="mt-1 text-sm font-semibold">
           {error}
         </p>
       )}
@@ -2142,14 +2142,14 @@ export function FormularioInscripcion() {
           </span>
         </label>
         {errors.privacidad && (
-          <p id="privacidad-error" role="alert" className="mt-1 text-sm font-600">
+          <p id="privacidad-error" role="alert" className="mt-1 text-sm font-semibold">
             {errors.privacidad.message}
           </p>
         )}
       </div>
 
       {errorEnvio && (
-        <p role="alert" className="rounded-carta border-2 border-tinta bg-durazno p-4 font-600">
+        <p role="alert" className="rounded-carta border-2 border-tinta bg-durazno p-4 font-semibold">
           {errorEnvio}
         </p>
       )}

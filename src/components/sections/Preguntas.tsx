@@ -9,7 +9,7 @@ export function Preguntas() {
         {faq.items.map((f) => (
           <li key={f.pregunta}>
             <details className="group rounded-carta border-2 border-tinta bg-crema sombra-dura open:bg-maiz">
-              <summary className="cursor-pointer list-none px-6 py-4 font-titulo text-lg font-semibold marker:hidden">
+              <summary className="cursor-pointer list-none px-6 py-4 font-titulo text-lg font-semibold">
                 <span className="flex items-center justify-between gap-4">
                   {f.pregunta}
                   <span

@@ -18,6 +18,9 @@ export const site = {
     horarios: "[[LUNES A VIERNES, 3:00 PM A 7:00 PM]]",
     facebook: "[[URL DE FACEBOOK]]",
     instagram: "[[URL DE INSTAGRAM]]",
+    // Aún no está conectado a ningún componente. Ver README: cuando exista la
+    // dirección real, este es el lugar para guardar la URL del iframe de Google
+    // Maps que se pegará en la sección de contacto (src/components/sections/Contacto.tsx).
     mapsUrl: "[[URL DE GOOGLE MAPS]]",
   },
 
@@ -218,7 +221,8 @@ export const site = {
     },
     errores: {
       generico: "No pudimos enviar tu solicitud.",
-      red: "No pudimos enviar tu solicitud. Revisa tu conexión o escríbenos por WhatsApp.",
+      red: "No pudimos enviar tu solicitud.",
+      contactoAlterno: "Mientras tanto, puedes contactarnos directamente:",
     },
     obligatorios: "Los campos con asterisco son obligatorios.",
   },

@@ -14,7 +14,7 @@ const valido = {
   mensaje: "Quiero informes",
   privacidad: true,
   website: "",
-  iniciadoEn: 0, // hace mucho — pasa el control de tiempo
+  transcurrido: 5000, // más que MS_MINIMOS — pasa el control de tiempo
 };
 
 const pedir = (body: unknown) =>
@@ -105,23 +105,43 @@ describe("POST /api/inscripcion", () => {
     await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
+  it("acepta un envío con 5000ms transcurridos", async () => {
+    const res = await POST(pedir({ ...valido, transcurrido: 5000 }));
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({ ok: true });
+  });
+
   it("rechaza envíos hechos en menos de 3 segundos", async () => {
-    const res = await POST(pedir({ ...valido, iniciadoEn: Date.now() - 500 }));
+    const res = await POST(pedir({ ...valido, transcurrido: 500 }));
     expect(res.status).toBe(400);
     expect(globalThis.fetch).not.toHaveBeenCalled();
     await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
-  it("rechaza cuando iniciadoEn está ausente", async () => {
-    const { iniciadoEn: _iniciadoEn, ...sinIniciadoEn } = valido;
-    const res = await POST(pedir(sinIniciadoEn));
+  it("rechaza cuando transcurrido está ausente", async () => {
+    const { transcurrido: _transcurrido, ...sinTranscurrido } = valido;
+    const res = await POST(pedir(sinTranscurrido));
     expect(res.status).toBe(400);
     expect(globalThis.fetch).not.toHaveBeenCalled();
     await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
   });
 
-  it("rechaza cuando iniciadoEn no es numérico", async () => {
-    const res = await POST(pedir({ ...valido, iniciadoEn: "hace un rato" }));
+  it("rechaza cuando transcurrido no es numérico", async () => {
+    const res = await POST(pedir({ ...valido, transcurrido: "hace un rato" }));
+    expect(res.status).toBe(400);
+    expect(globalThis.fetch).not.toHaveBeenCalled();
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
+  });
+
+  it("rechaza transcurrido negativo (desfase de reloj del cliente)", async () => {
+    const res = await POST(pedir({ ...valido, transcurrido: -10000 }));
+    expect(res.status).toBe(400);
+    expect(globalThis.fetch).not.toHaveBeenCalled();
+    await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
+  });
+
+  it("rechaza transcurrido enviado como cadena", async () => {
+    const res = await POST(pedir({ ...valido, transcurrido: "5000" }));
     expect(res.status).toBe(400);
     expect(globalThis.fetch).not.toHaveBeenCalled();
     await expect(res.json()).resolves.toEqual({ ok: false, error: expect.any(String) });
@@ -189,7 +209,7 @@ describe("POST /api/inscripcion", () => {
     });
 
     it("en 400 por control de tiempo", async () => {
-      const res = await POST(pedir({ ...valido, iniciadoEn: Date.now() - 500 }));
+      const res = await POST(pedir({ ...valido, transcurrido: 500 }));
       expect(await res.text()).not.toContain(CLAVE);
     });
 

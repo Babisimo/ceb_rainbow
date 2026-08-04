@@ -13,7 +13,7 @@ const malo = (error: string) =>
 
 const noDisponible = () =>
   Response.json(
-    { ok: false, error: "No pudimos enviar tu solicitud. Escríbenos por WhatsApp." },
+    { ok: false, error: "No pudimos enviar tu solicitud." },
     { status: 502 },
   );
 
@@ -29,15 +29,18 @@ export async function POST(request: Request) {
     return malo("No pudimos leer el formulario.");
   }
 
-  const { website, iniciadoEn, ...campos } = cuerpo as Record<string, unknown>;
+  const { website, transcurrido, ...campos } = cuerpo as Record<string, unknown>;
 
   // Honeypot: campo oculto que solo un bot llena.
   if (website !== undefined && website !== "") {
     return malo("No pudimos procesar el envío.");
   }
 
-  // Control de tiempo. Ausente, no numérico o no finito se trata como sospechoso.
-  if (!Number.isFinite(iniciadoEn) || Date.now() - (iniciadoEn as number) < MS_MINIMOS) {
+  // Control de tiempo. Se mide el tiempo TRANSCURRIDO, calculado enteramente
+  // en el cliente, para no depender de comparar contra el reloj del servidor
+  // (un celular con la hora mal puesta nunca debe bloquear el envío).
+  // Ausente, no numérico, no finito o negativo se trata como sospechoso.
+  if (!Number.isFinite(transcurrido) || (transcurrido as number) < MS_MINIMOS) {
     return malo("Tómate un momento para revisar los datos y vuelve a enviar.");
   }
 

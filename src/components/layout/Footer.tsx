@@ -29,7 +29,7 @@ export function Footer() {
           </ul>
           <Link
             href="/aviso-de-privacidad"
-            className="mt-4 inline-block underline underline-offset-4"
+            className="mt-4 inline-block py-3 underline underline-offset-4"
           >
             Aviso de privacidad
           </Link>

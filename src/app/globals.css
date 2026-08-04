@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* source("../") limita el escaneo automático de clases a src/ (esta hoja vive
+   en src/app/), para que docs/, .superpowers/ y otros archivos fuera del
+   código no generen utilidades fantasma a partir de prosa que cite clases. */
+@import "tailwindcss" source("../");
 
 @theme {
   /* Paleta — marketing_sources/color_scheme.jpeg.

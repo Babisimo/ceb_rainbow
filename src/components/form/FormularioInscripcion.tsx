@@ -27,8 +27,9 @@ type ValoresFormulario = z.input<typeof inscripcionSchema>;
 export function FormularioInscripcion() {
   const router = useRouter();
   const iniciadoEn = useRef(Date.now());
+  const honeypot = useRef<HTMLInputElement>(null);
   const [errorEnvio, setErrorEnvio] = useState<string | null>(null);
-  const { formulario } = site;
+  const { formulario, escuela } = site;
 
   const {
     register,
@@ -47,8 +48,8 @@ export function FormularioInscripcion() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           ...datos,
-          website: "",
-          iniciadoEn: iniciadoEn.current,
+          website: honeypot.current?.value ?? "",
+          transcurrido: Date.now() - iniciadoEn.current,
         }),
       });
       const cuerpo = await res.json();
@@ -74,7 +75,14 @@ export function FormularioInscripcion() {
       {/* Trampa para bots. Nadie que use el sitio lo ve ni lo tabula. */}
       <div aria-hidden="true" className="hidden">
         <label htmlFor="website">No llenar</label>
-        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        <input
+          ref={honeypot}
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
       </div>
 
       <Campo id="tutor" etiqueta={formulario.etiquetas.tutor} requerido error={errors.tutor?.message}>
@@ -192,9 +200,12 @@ export function FormularioInscripcion() {
       </div>
 
       {errorEnvio && (
-        <p role="alert" className="rounded-carta border-2 border-tinta bg-durazno p-4 font-semibold">
-          {errorEnvio}
-        </p>
+        <div role="alert" className="rounded-carta border-2 border-tinta bg-durazno p-4 font-semibold">
+          <p>{errorEnvio}</p>
+          <p className="mt-2 font-normal">
+            {formulario.errores.contactoAlterno} {escuela.telefono} — {escuela.correo}
+          </p>
+        </div>
       )}
 
       <Boton type="submit" disabled={isSubmitting}>

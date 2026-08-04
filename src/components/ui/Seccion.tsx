@@ -19,7 +19,7 @@ type Props = {
 
 export function Seccion({ id, fondo = "crema", eyebrow, titulo, children }: Props) {
   return (
-    <section id={id} className={`${fondos[fondo]} px-5 py-16 sm:px-8 md:py-24`}>
+    <section id={id} className={`${fondos[fondo]} scroll-mt-24 px-5 py-16 sm:px-8 md:py-24`}>
       <div className="mx-auto max-w-6xl">
         {eyebrow && (
           <p className="mb-2 font-mano text-2xl">{eyebrow}</p>

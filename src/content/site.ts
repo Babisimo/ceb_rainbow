@@ -220,7 +220,7 @@ export const site = {
       generico: "No pudimos enviar tu solicitud.",
       red: "No pudimos enviar tu solicitud. Revisa tu conexión o escríbenos por WhatsApp.",
     },
-    obligatorios: "Los campos con * son obligatorios.",
+    obligatorios: "Los campos con asterisco son obligatorios.",
   },
 
   contacto: {

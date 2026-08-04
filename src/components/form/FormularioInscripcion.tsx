@@ -163,6 +163,15 @@ export function FormularioInscripcion() {
           />
           <span>
             {formulario.privacidad.texto}{" "}
+            {/*
+              Lo que evita que este clic también marque el checkbox es que <a href> es
+              "contenido interactivo" según la especificación de HTML: el comportamiento
+              de activación de <label> no reenvía el clic a su control cuando el objetivo
+              es contenido interactivo. stopPropagation no cancela ese comportamiento nativo
+              (para eso haría falta preventDefault, que aquí mataría la navegación del
+              enlace); se deja solo como protección adicional contra un futuro onClick en
+              algún ancestro.
+            */}
             <a
               href="/aviso-de-privacidad"
               target="_blank"

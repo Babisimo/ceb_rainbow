@@ -3,7 +3,7 @@ import { Boton } from "@/components/ui/Boton";
 import { urlWhatsApp } from "@/lib/whatsapp";
 
 export function Hero() {
-  const { hero } = site;
+  const { hero, escuela } = site;
   const wa = urlWhatsApp();
 
   return (
@@ -22,7 +22,7 @@ export function Hero() {
             <Boton href="#inscripcion">{hero.ctaPrimario}</Boton>
             {wa !== "#" && (
               <Boton href={wa} variante="secundario">
-                {hero.ctaSecundario}
+                {escuela.ctaWhatsApp}
               </Boton>
             )}
           </div>

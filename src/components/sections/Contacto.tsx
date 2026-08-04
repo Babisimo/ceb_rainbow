@@ -5,7 +5,7 @@ import { Boton } from "@/components/ui/Boton";
 import { urlWhatsApp } from "@/lib/whatsapp";
 
 export function Contacto() {
-  const { escuela, contacto, hero } = site;
+  const { escuela, contacto } = site;
   const wa = urlWhatsApp();
 
   return (
@@ -42,7 +42,7 @@ export function Contacto() {
           {wa !== "#" && (
             <div className="mt-6">
               <Boton href={wa} variante="secundario">
-                {hero.ctaSecundario}
+                {escuela.ctaWhatsApp}
               </Boton>
             </div>
           )}

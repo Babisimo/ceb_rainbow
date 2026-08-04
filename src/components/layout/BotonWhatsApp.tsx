@@ -1,3 +1,4 @@
+import { site } from "@/content/site";
 import { urlWhatsApp } from "@/lib/whatsapp";
 
 export function BotonWhatsApp() {
@@ -11,7 +12,7 @@ export function BotonWhatsApp() {
       rel="noopener noreferrer"
       className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full border-2 border-tinta bg-menta sombra-dura transition-transform hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
     >
-      <span className="sr-only">Escribir por WhatsApp</span>
+      <span className="sr-only">{site.escuela.ctaWhatsApp}</span>
       <svg
         viewBox="0 0 24 24"
         aria-hidden="true"

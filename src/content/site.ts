@@ -13,6 +13,7 @@ export const site = {
     direccion: "[[CALLE Y NÚMERO, COLONIA, C.P.]]",
     telefono: "[[TELÉFONO A 10 DÍGITOS]]",
     whatsapp: "[[WHATSAPP A 10 DÍGITOS]]",
+    ctaWhatsApp: "Escribir por WhatsApp",
     correo: "[[CORREO@EJEMPLO.COM]]",
     horarios: "[[LUNES A VIERNES, 3:00 PM A 7:00 PM]]",
     facebook: "[[URL DE FACEBOOK]]",
@@ -26,7 +27,6 @@ export const site = {
     subtitulo:
       "Clases en grupos pequeños donde tu hija o hijo habla inglés desde el primer día. Sin libros aburridos, sin memorizar listas.",
     ctaPrimario: "Apartar un lugar",
-    ctaSecundario: "Escribir por WhatsApp",
     datos: [
       { valor: "4 a 12", etiqueta: "años" },
       { valor: "[[8]]", etiqueta: "niños por grupo" },

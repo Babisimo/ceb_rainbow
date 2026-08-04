@@ -3,3 +3,17 @@ node_modules/
 out/
 .env*.local
 .DS_Store
+
+# typescript
+*.tsbuildinfo
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# vercel
+.vercel
+
+# testing
+/coverage

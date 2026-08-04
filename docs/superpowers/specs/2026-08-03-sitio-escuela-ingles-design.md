@@ -184,5 +184,18 @@ Sin pruebas end-to-end. El costo de mantenerlas supera el valor en un sitio de e
 
 - Portal de alumnos, inicio de sesión, pagos en línea.
 - Blog o gestor de contenido.
-- Versión en inglés.
 - Analítica y píxeles de seguimiento.
+
+## Diferido a una fase posterior
+
+**Selector de idioma español / inglés.** Se lanza solo en español. El público que
+decide la inscripción son padres y tutores de Magdalena de Kino: el español es el
+idioma de la decisión. El inglés es lo que se vende, no el idioma en que se vende.
+
+La arquitectura ya lo contempla: toda la copia vive en `src/content/site.ts` y
+ningún componente de sección tiene texto escrito directamente ni recibe contenido
+por props. Agregar un idioma significa indexar ese objeto por locale y pasar el
+locale hacia abajo — no significa tocar los componentes.
+
+Esa propiedad hay que conservarla. Una cadena en español escrita dentro de un
+componente es exactamente lo que encarece el cambio después.

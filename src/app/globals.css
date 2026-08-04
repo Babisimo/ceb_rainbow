@@ -1,0 +1,75 @@
+/* source("../") limita el escaneo automático de clases a src/ (esta hoja vive
+   en src/app/), para que docs/, .superpowers/ y otros archivos fuera del
+   código no generen utilidades fantasma a partir de prosa que cite clases. */
+@import "tailwindcss" source("../");
+
+@theme {
+  /* Paleta — marketing_sources/color_scheme.jpeg.
+     Ratios contra tinta #422F0E anotados. Ver la tabla del plan. */
+  --color-crema: #fdf8f0;      /* 12.2:1 */
+  --color-tinta: #422f0e;
+  --color-teal: #037f71;       /* texto crema encima: 4.6:1 */
+  --color-maiz: #f7e9b2;       /* 10.6:1 */
+  --color-menta: #ddf2b8;      /* 10.6:1 */
+  --color-lavanda: #f9d4f8;    /*  9.7:1 */
+  --color-ambar: #ffd094;      /*  9.1:1 — botón principal */
+  --color-durazno: #fcc4c0;    /*  8.4:1 */
+  --color-cielo: #aecfd0;      /*  7.7:1 */
+  --color-naranja: #f49625;    /*  5.7:1 */
+  --color-turquesa: #57b1a8;   /*  5.1:1 */
+  --color-tomate: #ef6545;     /*  4.1:1 — SOLO texto de 24px o más */
+  --color-rosa: #ea5e86;       /*  4.0:1 — SOLO texto de 24px o más */
+
+  --font-titulo: var(--fuente-titulo), system-ui, sans-serif;
+  --font-mano: var(--fuente-mano), cursive;
+  --font-texto: var(--fuente-texto), system-ui, sans-serif;
+
+  --radius-carta: 1.25rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-crema);
+    color: var(--color-tinta);
+    font-family: var(--font-texto);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-titulo);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* Anillo de foco: teal sobre cualquier fondo claro = 4.6:1.
+     Tomate daría 2.98:1 y reprueba el mínimo de 3:1 para elementos no textuales. */
+  :focus-visible {
+    outline: 3px solid var(--color-teal);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@utility sombra-dura {
+  box-shadow: 4px 4px 0 0 var(--color-tinta);
+}
+
+@utility sombra-dura-sm {
+  box-shadow: 2px 2px 0 0 var(--color-tinta);
+}

@@ -12,9 +12,10 @@ A Spanish-language marketing website for a children's English school in **Magdal
 
 The audience is **parents and guardians deciding whether to enroll**, not the kids. The site's one job is to get a working enrollment lead to the owner.
 
-## Status: complete and merged
+## Status: built, pushed, not deployed
 
 - Branch `feat/sitio-escuela` merged to `master` at `0c7a4bc`, branch deleted.
+- Pushed to `origin/master` on 2026-08-04. Check `git log` for the current head — this file is committed too, so any hash written here is stale by one.
 - **45 tests passing**, `tsc --noEmit` clean, `npm run build` succeeds (7 routes).
 - Not deployed. Not launchable yet — see "Before launch" below.
 
@@ -24,6 +25,39 @@ npm run dev      # localhost:3000
 npm test         # 45 tests
 npm run build
 ```
+
+### Where we left off — 2026-08-04
+
+Session did a typography audit, applied four fixes, filled the school name, and
+set up the repo. Full detail in "Typography audit" below.
+
+Commits, both authored `Babo Claude <ogonzalez@calvada.com>` at the user's request:
+
+- `e00d046` — audit fixes, school name, logo file, `.claude/settings.json` tracked
+- `223d9b7` — README rewritten in English, Vercel preview guide
+
+**Next up:** the user plans a **Vercel preview deploy** so the owner can watch
+progress before launch. Import `Babisimo/ceb_rainbow` at vercel.com/new; the
+Next.js preset auto-detects. Every push to `master` redeploys.
+
+Two things will look broken to the owner on that preview and are not:
+
+1. The `[[MARCADORES]]` render on screen. By design — see "Before launch".
+2. The enrollment form fails with no `WEB3FORMS_ACCESS_KEY`, and its fallback
+   message points at a phone and email that are themselves still markers. Either
+   warn her off the form or set the key in Vercel *Settings › Environment
+   Variables* and redeploy — env vars do not apply to existing deployments.
+
+**Waiting on the user:** vector or transparent-PNG logo, plus a second lockup
+with the "RAINBOW" wordmark in ink or teal. See "Logo" under Deferred work.
+
+**Two repo decisions left open, both deliberate, neither urgent:**
+
+- The repo is **public** and every commit carries `ogonzalez@calvada.com`. Normal
+  for GitHub; flagged because it is a work address on a public repo. Undoing it
+  means rewriting all 11 commits.
+- Default branch is `master`, not `main` — the repo was empty, so whatever landed
+  first became default. Cheap to rename while nothing depends on it.
 
 ---
 

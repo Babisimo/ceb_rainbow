@@ -20,8 +20,10 @@ export function Campo({ id, etiqueta, error, requerido, children }: Props) {
         )}
       </label>
       {children}
+      {/* Tamaño base, no text-sm: el error no lleva color (rojo reprueba
+          contraste sobre crema), así que el texto es la señal principal. */}
       {error && (
-        <p id={`${id}-error`} role="alert" className="mt-1 text-sm font-semibold">
+        <p id={`${id}-error`} role="alert" className="mt-1 font-semibold">
           {error}
         </p>
       )}

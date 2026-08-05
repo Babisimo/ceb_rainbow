@@ -9,8 +9,11 @@ export function Preguntas() {
         {faq.items.map((f) => (
           <li key={f.pregunta}>
             <details className="group rounded-carta border-2 border-tinta bg-crema sombra-dura open:bg-maiz">
-              <summary className="cursor-pointer list-none px-6 py-4 font-titulo text-lg font-semibold">
-                <span className="flex items-center justify-between gap-4">
+              {/* El <h3> dentro del <summary> es válido (su modelo de contenido
+                  admite contenido de encabezado) y deja que un lector de pantalla
+                  salte de pregunta a pregunta con la lista de encabezados. */}
+              <summary className="cursor-pointer list-none px-6 py-4">
+                <h3 className="flex items-center justify-between gap-4 font-titulo text-lg font-semibold">
                   {f.pregunta}
                   <span
                     aria-hidden="true"
@@ -18,7 +21,7 @@ export function Preguntas() {
                   >
                     +
                   </span>
-                </span>
+                </h3>
               </summary>
               <p className="px-6 pb-5 leading-relaxed">{f.respuesta}</p>
             </details>

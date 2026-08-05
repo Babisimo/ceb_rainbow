@@ -193,7 +193,7 @@ export function FormularioInscripcion() {
           </span>
         </label>
         {errors.privacidad && (
-          <p id="privacidad-error" role="alert" className="mt-1 text-sm font-semibold">
+          <p id="privacidad-error" role="alert" className="mt-1 font-semibold">
             {errors.privacidad.message}
           </p>
         )}

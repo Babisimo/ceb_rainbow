@@ -17,3 +17,6 @@ yarn-error.log*
 
 # testing
 /coverage
+
+# claude code — la configuración compartida sí se versiona, la local no
+.claude/settings.local.json

@@ -8,7 +8,7 @@
 
 export const site = {
   escuela: {
-    nombre: "[[NOMBRE DE LA ESCUELA]]",
+    nombre: "CEB Rainbow",
     ciudad: "Magdalena de Kino, Sonora",
     direccion: "[[CALLE Y NÚMERO, COLONIA, C.P.]]",
     telefono: "[[TELÉFONO A 10 DÍGITOS]]",

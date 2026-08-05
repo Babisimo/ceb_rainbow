@@ -2,6 +2,8 @@
 
 Last updated: 2026-08-04. Read this first in a new session; it replaces the chat history.
 
+Repo: `https://github.com/Babisimo/ceb_rainbow` (public).
+
 ---
 
 ## What this is
@@ -62,7 +64,9 @@ Sections are **zero-prop** — each reads `site` directly. Splitting the landing
 
 ### 1. Replace the `[[MARCADORES]]`
 
-Everything unknown is a visible `[[MARKER]]` in `src/content/site.ts` — 32 of them. They render on screen on purpose so the site cannot be published half-empty. School name, phone, WhatsApp, address, hours, socials, prices, testimonials, teacher bios, privacy-notice legal entity.
+Everything unknown is a visible `[[MARKER]]` in `src/content/site.ts` — **31 left**. They render on screen on purpose so the site cannot be published half-empty. Phone, WhatsApp, address, hours, socials, prices, testimonials, teacher bios, privacy-notice legal entity.
+
+The school name is filled: **CEB Rainbow** (Centro Educativo Bilingüe Rainbow).
 
 **Never invent values for these.** No plausible-looking fake phone numbers or testimonials.
 
@@ -110,6 +114,10 @@ Confirm the email actually arrives. This is the only check that proves the chain
 
 **Fonts** are free substitutes for the cousin's requested paid faces (Irene Florentina, More Sugar are commercial). Currently Fredoka (display), Sue Ellen Francisco (handwriting accents, the one free face she asked for), Figtree (body). Swapping to licensed `.woff2` files is a change to `src/lib/fonts.ts` only — the CSS variables don't change, so no component is touched.
 
+**Do not add a `weight` array to Fredoka.** It is a variable font (wght 300–700). Declaring weights forces next/font to download a static instance per weight — that shipped as 8 files, of which 400 and 500 were never used by anything. Removing the array cut the built stylesheet from 18 `@font-face` rules to 9. Figtree is also variable and correctly has no `weight`. Sue Ellen Francisco is single-weight static, so its `weight: "400"` is correct.
+
+**Sue Ellen Francisco was trialled against Caveat 700 and kept.** Caveat has the heavier brush stroke that matches the logo, plus a bigger x-height so the `font-mano` accents actually read at 24px. It was rejected anyway: Sue Ellen is the owner's own pick, and that outranks the design argument. Do not re-propose the swap without asking her.
+
 **Form ↔ route contract.** The form must send `website` (honeypot value) and `transcurrido` (elapsed ms since mount, computed **client-side**). The route rejects a non-empty honeypot and anything under 3000ms. Do not change this to send an absolute timestamp — that was a bug: comparing the phone's clock to the server's permanently blocked any parent whose phone ran fast.
 
 ---
@@ -132,6 +140,15 @@ Hero deliberately plays it straight: headline, subhead, two CTAs, trust row, pho
 
 **English/Spanish toggle** — user asked for it "down the line", explicitly deferred. Currently ~85–90% ready: `site.ts` holds ~95% of copy. Remaining ~40 strings across 8 files: `Header.tsx` (nav labels, `aria-label`, CTA), `Footer.tsx` (section headings, prefixes), `layout.tsx` (skip link + 6 metadata strings), `gracias/page.tsx`, `not-found.tsx`, `whatsapp.ts` default message, and `schema.ts`'s `EXPERIENCIAS`/`HORARIOS` option labels (these are user-visible `<option>` text and are **not** covered by the validation-message exemption). Biggest item: `aviso-de-privacidad/page.tsx` has ~12 legal strings needing a human translator. Plumbing still needed: make `site` a function of locale (it's a flat `as const`), un-hardcode `lang="es-MX"`, add a locale route segment. Estimate ≈ 1 day plus translation turnaround.
 
+**Logo** — `marketing_sources/CEB-RAINBOW.jpeg` is the art the owner supplied. It is **not usable on the site as-is**, for two reasons:
+
+1. It is a JPEG. No alpha channel — the background is real black pixels, not transparency. Need SVG (it is flat vector art) or a transparent PNG.
+2. The "RAINBOW" wordmark is knocked out in **white**. On the crema page background it disappears. It works on the teal header (`Header.tsx:14`) and the teal footer at 4.9:1, and nowhere else. A second lockup with the wordmark in ink `#422F0E` or teal is needed for the favicon, the OG image, print, and any crema placement.
+
+Also unresolved: the logo's teal for "Centro Educativo Bilingüe" reads lighter and brighter than the site's `--color-teal #037F71`. Two teals side by side in the header will look like a mistake. Sample the exact value off the vector and either retoken the site or have the logo matched.
+
+The logo's coral rays are near-identical to `--color-tomate #EF6545`. The blue and purple rainbow bands have no equivalent in the token set — fine, the logo is an image, not a token.
+
 **Photos** — Hero has a dashed placeholder box. Drop images in `public/images/` and replace the box with `next/image`.
 
 **Google Maps** — Contacto has a dashed placeholder. Paste the embed iframe once the real address exists. `site.escuela.mapsUrl` is where the URL belongs (currently unwired, intentionally kept).
@@ -143,6 +160,27 @@ Hero deliberately plays it straight: headline, subhead, two CTAs, trust row, pho
 **Testing scope** — 45 tests cover `lib/schema.ts` and the API route only. No component or E2E tests. Deliberate scope decision for a site this size.
 
 ---
+
+## Typography audit — 2026-08-04
+
+Source-level pass over fonts, contrast, headings and body copy. Not a visual pass; nothing was checked in a browser.
+
+**Contrast: no failures.** Every colour-on-colour pair actually shipping was recomputed. teal on crema 4.6:1 carries the eyebrows at 24px and the stat/step numbers at 30px bold — all qualify as large text. The teal section's cards hand-set `text-tinta`. The placeholder `text-tinta/70` blends to `#7A6B52` on crema = **4.91:1**, so the fix for bug 11 held.
+
+**Fixed in this pass:**
+
+- `lib/fonts.ts` — dropped Fredoka's `weight` array. 18 `@font-face` rules → 9.
+- `ui/Tarjeta.tsx` — added explicit `text-tinta`. The card sets `bg-crema` but inherited its text colour, so dropping one inside a `<Seccion fondo="teal">` would have rendered crema on crema. Not live at the time — Testimonios is the only teal section and it bypasses `Tarjeta` — but it was a trap for the next teal section.
+- `sections/Preguntas.tsx` — the FAQ `<summary>` was styled like a heading but wasn't one, so screen-reader users had no heading list to jump between questions. Now wraps an `<h3>` (valid: `summary`'s content model admits heading content).
+- `ui/Campo.tsx`, `form/FormularioInscripcion.tsx` — form errors moved off `text-sm` to base size. Errors carry no colour by design, so the text is the primary signal and shouldn't be the smallest thing on the page.
+
+**Open, not fixed:**
+
+- **Hole in the type scale.** h2 is 30/36/48px, h3 is 20px, nothing between. `Programa.tsx:32` already invents `text-2xl sm:text-3xl` for an h3 to fill the gap, so the same semantic level renders at two very different sizes on one page. Wants a real h3 token, not another one-off.
+- **Sue Ellen Francisco is faint at `text-2xl`.** Tiny x-height, single 400 weight, hairline strokes; `-webkit-font-smoothing: antialiased` (`globals.css:48`) thins it further. Where it is also `text-teal` the 4.6:1 rides on hairlines — passes WCAG, reads weak. Bumping the eyebrows to `text-3xl` is the fix that doesn't touch her font choice.
+- **Footer `<h2>` collides with section `<h2>`.** `Footer.tsx:15,25` — "Contacto" appears as an h2 twice on the page. Deliberately left: demoting to `<h3>` creates a level skip with no `<h2>` in the footer, which is worse. The real fix is renaming the footer column heading, and that is copy, so it belongs in `site.ts`.
+- **`leading-relaxed` applied unevenly.** Present on card bodies, absent on `Contacto` dd, the `Footer` lists and `Hero.tsx:37` stat labels, which fall back to 1.5.
+- **Fredoka and Figtree are both geometric sans.** Similar skeletons; display-vs-body separation rests on weight and size rather than letterform. Cosmetic, lowest priority, and it disappears if the licensed faces are ever bought.
 
 ## Bugs caught during the build
 

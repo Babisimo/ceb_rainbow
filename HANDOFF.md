@@ -217,5 +217,5 @@ A subagent ran `taskkill /F /IM chrome.exe` during cleanup and killed **all ~37 
 
 - `docs/superpowers/specs/2026-08-03-sitio-escuela-ingles-design.md` — the approved design/spec
 - `docs/superpowers/plans/2026-08-03-sitio-escuela-ingles.md` — the 10-task implementation plan (note: its Task 3/4 code blocks are now stale relative to shipped `schema.ts` and `route.ts`)
-- `README.md` — owner-facing deploy instructions, in Spanish
+- `README.md` — setup, testing, Vercel preview deploys and the pre-launch checklist. **In English**, on request: it is for whoever maintains the code, not for the owner. The site's own copy stays Spanish.
 - `marketing_sources/` — the cousin's palette and font list

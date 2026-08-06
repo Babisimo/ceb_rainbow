@@ -2,9 +2,11 @@ import Link from "next/link";
 import { site } from "@/content/site";
 import { Boton } from "@/components/ui/Boton";
 
+// Cuatro como máximo: con cinco, en pantallas de ~768px la barra se apretaba
+// y empujaba el CTA. Ver HANDOFF, bug 6.
 const enlaces = [
+  { href: "#grupos", texto: "Grupos" },
   { href: "#programa", texto: "Programa" },
-  { href: "#metodo", texto: "Método" },
   { href: "#nosotros", texto: "Nosotros" },
   { href: "#preguntas", texto: "Preguntas" },
 ];

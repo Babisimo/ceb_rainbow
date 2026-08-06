@@ -30,8 +30,8 @@ export default function AvisoDePrivacidad() {
 
         <h2 className="pt-4 text-2xl">Para qué los usamos</h2>
         <p>
-          Únicamente para contactarle sobre las clases, agendar una clase de
-          prueba, y darle seguimiento a su solicitud de inscripción. No usamos
+          Únicamente para contactarle sobre la inscripción, agendar una visita
+          a la escuela, y darle seguimiento a su solicitud. No usamos
           estos datos con fines publicitarios ni los compartimos con terceros,
           salvo el proveedor de correo que nos entrega el mensaje del
           formulario.

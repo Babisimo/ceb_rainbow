@@ -1,17 +1,16 @@
 import { z } from "zod";
 
-export const EDADES = [4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
+export const EDADES = [1, 2, 3, 4] as const;
 
-export const EXPERIENCIAS = [
-  { value: "nada", label: "No ha estudiado inglés" },
-  { value: "poco", label: "Un poco, en la escuela" },
-  { value: "si", label: "Sí, ha tomado clases antes" },
+export const GRUPOS = [
+  { value: "nido", label: "Nido" },
+  { value: "nido1", label: "Nido 1" },
+  { value: "kinder1", label: "Kinder 1" },
 ] as const;
 
 export const HORARIOS = [
-  { value: "manana", label: "Mañana" },
-  { value: "tarde", label: "Tarde" },
-  { value: "sabado", label: "Sábado" },
+  { value: "regular", label: "Regular (9:00 a 13:00)" },
+  { value: "extendido", label: "Extendido (9:00 a 16:00)" },
 ] as const;
 
 /** Deja solo dígitos: "(632) 123-45 67" -> "6321234567" */
@@ -51,20 +50,20 @@ export const inscripcionSchema = z.object(
     edad: z
       .number({ message: "Selecciona la edad." })
       .int("Selecciona una edad válida.")
-      .min(4, "Damos clases a partir de los 4 años.")
-      .max(12, "Damos clases hasta los 12 años."),
+      .min(1, "Recibimos niñas y niños a partir del año de edad.")
+      .max(4, "Recibimos niñas y niños hasta los 4 años."),
 
-    experiencia: z.preprocess(
+    grupo: z.preprocess(
       vacioAIndefinido,
       z
-        .enum(["nada", "poco", "si"], { message: "Selecciona una opción válida." })
+        .enum(["nido", "nido1", "kinder1"], { message: "Selecciona una opción válida." })
         .optional()
     ),
 
     horario: z.preprocess(
       vacioAIndefinido,
       z
-        .enum(["manana", "tarde", "sabado"], { message: "Selecciona una opción válida." })
+        .enum(["regular", "extendido"], { message: "Selecciona una opción válida." })
         .optional()
     ),
 

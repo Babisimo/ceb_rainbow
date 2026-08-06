@@ -25,7 +25,17 @@ export function Footer() {
           <h2 className="font-titulo text-lg font-semibold">Redes</h2>
           <ul className="mt-2 space-y-1">
             <li>Facebook: {escuela.facebook}</li>
-            <li>Instagram: {escuela.instagram}</li>
+            <li>
+              Instagram:{" "}
+              <a
+                href={escuela.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4"
+              >
+                {escuela.instagramUsuario}
+              </a>
+            </li>
           </ul>
           <Link
             href="/aviso-de-privacidad"

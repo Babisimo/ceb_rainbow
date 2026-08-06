@@ -4,7 +4,7 @@ import { Seccion } from "@/components/ui/Seccion";
 export function Testimonios() {
   const { testimonios } = site;
   return (
-    <Seccion id="testimonios" fondo="teal" titulo={testimonios.titulo}>
+    <Seccion id="testimonios" fondo="menta" titulo={testimonios.titulo}>
       <ul className="grid gap-6 md:grid-cols-2">
         {testimonios.items.map((t) => (
           <li key={t.autor}>

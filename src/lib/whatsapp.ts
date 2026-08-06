@@ -1,7 +1,7 @@
 import { site } from "@/content/site";
 
 const MENSAJE_POR_OMISION =
-  "Hola, quiero informes sobre las clases de inglés para niños.";
+  "Hola, quiero informes sobre las inscripciones en CEB Rainbow.";
 
 /**
  * Construye el enlace wa.me. México lleva lada país 52.

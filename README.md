@@ -1,7 +1,8 @@
 # CEB Rainbow — school website
 
-Marketing site for **CEB Rainbow** (Centro Educativo Bilingüe Rainbow), an English
-school for kids aged 4–12 in Magdalena de Kino, Sonora.
+Marketing site for **CEB Rainbow** (Centro Educativo Bilingüe Rainbow), a bilingual
+preschool for kids aged 1–4 in Magdalena de Kino, Sonora. Full school day, roughly
+60% English / 40% Spanish, groups Nido / Nido 1 / Kinder 1.
 
 The site itself is in Spanish and stays that way — its audience is local parents.
 This README is in English for whoever is maintaining the code.
@@ -22,7 +23,7 @@ npm run dev                        # localhost:3000
 ## Test
 
 ```bash
-npm test          # 45 tests — form schema and API endpoint
+npm test          # 46 tests — form schema and API endpoint
 npm run build     # must compile before you deploy
 npx tsc --noEmit  # type check
 ```
@@ -36,8 +37,8 @@ Useful for showing work in progress to the owner before anything is final.
 3. Deploy. You get a public `*.vercel.app` URL.
 
 **Expect the preview to look unfinished, on purpose.** Anything still unknown
-renders on screen as a visible `[[MARKER]]` — phone number, address, hours,
-prices, testimonials, teacher names. That is deliberate: it makes it impossible
+renders on screen as a visible `[[MARKER]]` — email, Facebook URL, per-group age
+ranges, testimonials, teacher names. That is deliberate: it makes it impossible
 to publish the site half-empty by accident. Tell the owner the brackets are
 placeholders waiting on her, not bugs.
 
@@ -56,7 +57,12 @@ URL while updates land.
 1. **Replace the markers.** Everything in `[[DOUBLE BRACKETS]]` lives in
    `src/content/site.ts`. That is the only file to edit for copy and contact
    details. **Never invent values** — no placeholder phone numbers, no made-up
-   testimonials. 31 markers left.
+   testimonials. 22 markers left.
+   The most urgent one is `escuela.whatsapp`. The brochure lists a single number,
+   632 112 0929, and it is unconfirmed whether that line takes WhatsApp. While it
+   stays a marker, `urlWhatsApp()` returns `"#"` and every WhatsApp button hides
+   itself — so the site currently has no WhatsApp channel at all. Confirm with the
+   owner and paste the 10 digits.
 2. **Get the Web3Forms access key.** Sign up at <https://web3forms.com> with the
    school's email; the key arrives by email. Put it in `.env.local` for local
    work **and** in the hosting provider's environment variables. This is the

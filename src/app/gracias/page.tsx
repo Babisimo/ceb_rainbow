@@ -14,9 +14,9 @@ export default function Gracias() {
         <p className="font-mano text-2xl text-teal">Listo</p>
         <h1 className="mt-2 text-4xl md:text-5xl">Recibimos tu solicitud</h1>
         <p className="mt-5 text-lg leading-relaxed">
-          Te contactamos al teléfono o correo que dejaste para agendar la clase
-          de prueba. Si tienes prisa, escríbenos directo al{" "}
-          {site.escuela.telefono}.
+          Te contactamos al teléfono o correo que dejaste para agendar una
+          visita y enviarte la lista de costos del ciclo. Si tienes prisa,
+          escríbenos directo al {site.escuela.telefono}.
         </p>
         <div className="mt-8">
           <Boton href="/">Volver al inicio</Boton>

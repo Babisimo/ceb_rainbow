@@ -7,17 +7,17 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Inglés para niños en Magdalena de Kino",
-    template: "%s · Inglés para niños",
+    default: "CEB Rainbow · Preescolar bilingüe en Magdalena de Kino",
+    template: "%s · CEB Rainbow",
   },
   description:
-    "Clases de inglés para niñas y niños de 4 a 12 años en Magdalena de Kino, Sonora. Grupos pequeños, maestras certificadas y clase de prueba sin costo.",
+    "Centro Educativo Bilingüe Rainbow: preescolar para niñas y niños de 1 a 4 años en Magdalena de Kino, Sonora. Grupos reducidos, 60% del día en inglés, enfoque Montessori, Waldorf y Reggio Emilia.",
   openGraph: {
     type: "website",
     locale: "es_MX",
-    title: "Inglés para niños en Magdalena de Kino",
+    title: "CEB Rainbow · Preescolar bilingüe en Magdalena de Kino",
     description:
-      "Clases de inglés para niñas y niños de 4 a 12 años. Grupos pequeños en Magdalena de Kino, Sonora.",
+      "Preescolar bilingüe de 1 a 4 años en Magdalena de Kino, Sonora. Donde cada pequeño aprende, juega y crece con amor.",
   },
 };
 

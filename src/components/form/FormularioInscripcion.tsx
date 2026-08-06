@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import type { z } from "zod";
 import {
   EDADES,
-  EXPERIENCIAS,
+  GRUPOS,
   HORARIOS,
   inscripcionSchema,
   type Inscripcion,
@@ -17,7 +17,7 @@ import { Campo, controlBase } from "@/components/ui/Campo";
 import { Boton } from "@/components/ui/Boton";
 
 /**
- * Los <select> de experiencia/horario usan z.preprocess ("" -> undefined), lo que
+ * Los <select> de grupo/horario usan z.preprocess ("" -> undefined), lo que
  * hace que el tipo de ENTRADA del schema (antes de parsear) sea distinto del tipo
  * de SALIDA (Inscripcion). react-hook-form debe registrarse con el tipo de entrada;
  * el resolver ya se encarga de entregar el tipo de salida en el callback de submit.
@@ -132,10 +132,10 @@ export function FormularioInscripcion() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Campo id="experiencia" etiqueta={formulario.etiquetas.experiencia} error={errors.experiencia?.message}>
-          <select {...props("experiencia")} {...register("experiencia")} defaultValue="">
+        <Campo id="grupo" etiqueta={formulario.etiquetas.grupo} error={errors.grupo?.message}>
+          <select {...props("grupo")} {...register("grupo")} defaultValue="">
             <option value="">{formulario.opciones.sinEspecificar}</option>
-            {EXPERIENCIAS.map((o) => (
+            {GRUPOS.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
               </option>

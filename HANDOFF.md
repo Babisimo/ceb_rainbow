@@ -1,6 +1,6 @@
-# Handoff — sitio de la escuela de inglés
+# Handoff — sitio de CEB Rainbow
 
-Last updated: 2026-08-04. Read this first in a new session; it replaces the chat history.
+Last updated: 2026-08-05. Read this first in a new session; it replaces the chat history.
 
 Repo: `https://github.com/Babisimo/ceb_rainbow` (public).
 
@@ -8,33 +8,80 @@ Repo: `https://github.com/Babisimo/ceb_rainbow` (public).
 
 ## What this is
 
-A Spanish-language marketing website for a children's English school in **Magdalena de Kino, Sonora, Mexico**, owned by the user's cousin. Students are **kids aged 4–12 only** — no adult learners anywhere in the copy.
+A Spanish-language marketing website for **CEB Rainbow** (Centro Educativo Bilingüe Rainbow), a **bilingual preschool** in **Magdalena de Kino, Sonora, Mexico**, owned by the user's cousin.
+
+**Students are kids aged 1 to 4**, in three groups: Nido, Nido 1, Kinder 1. It is a **full school day** — ingreso 8:30–9:00, clases 9:00–13:00, horario extendido to 16:00 — not an after-school academy. Roughly **60% of the day is in English, 40% in Spanish**. The academic program is SEP's, delivered through Montessori, Waldorf, Reggio Emilia, play-based and active learning.
 
 The audience is **parents and guardians deciding whether to enroll**, not the kids. The site's one job is to get a working enrollment lead to the owner.
+
+### Content sources — read these before writing any copy
+
+`marketing_sources/` holds the owner's own brochures. They are the authority on what the school actually offers:
+
+- **`CICLO ESOCLAR 26 27 INFOR.pdf` — the primary source.** Current cycle (2026–2027). Address, phone, Instagram, groups and ages, methodologies, learning areas, extracurriculars, perfil de egreso, ¿quiénes somos?, tagline, and the full price list.
+- **`CICLO ESCOLAR 2024-2025.pdf` — reference only.** Its prices and its grade names (Maternal/Lactantes, K1, K2) are from a previous cycle and must **not** be used. What was taken from it, on the user's instruction: misión, visión, the eight valores, the daily schedule, and the 60/40 language split.
+
+Anything that appears in neither brochure is a `[[MARKER]]`.
 
 ## Status: built, pushed, not deployed
 
 - Branch `feat/sitio-escuela` merged to `master` at `0c7a4bc`, branch deleted.
 - Pushed to `origin/master` on 2026-08-04. Check `git log` for the current head — this file is committed too, so any hash written here is stale by one.
-- **45 tests passing**, `tsc --noEmit` clean, `npm run build` succeeds (7 routes).
+- **46 tests passing**, `tsc --noEmit` clean, `npm run build` succeeds (7 routes).
 - Not deployed. Not launchable yet — see "Before launch" below.
 
 ```bash
 npm install
 npm run dev      # localhost:3000
-npm test         # 45 tests
+npm test         # 46 tests
 npm run build
 ```
 
-### Where we left off — 2026-08-04
+### Where we left off — 2026-08-05
 
-Session did a typography audit, applied four fixes, filled the school name, and
-set up the repo. Full detail in "Typography audit" below.
+**The site had been built for the wrong school and this session fixed it.**
 
-Commits, both authored `Babo Claude <ogonzalez@calvada.com>` at the user's request:
+The original build described an after-school English academy for kids 4–12, with
+two classes a week and a listen→speak→read→write curriculum. Nobody had read the
+brochures. When they were read, CEB Rainbow turned out to be a full-day bilingual
+**preschool for ages 1–4**. Every age reference, the hero, `programa` and `metodo`
+were describing a school that does not exist.
 
-- `e00d046` — audit fixes, school name, logo file, `.claude/settings.json` tracked
-- `223d9b7` — README rewritten in English, Vercel preview guide
+What changed:
+
+- `src/content/site.ts` rewritten end to end against the 26-27 brochure.
+- **Four new sections** — `Grupos` (groups, schedule, 60/40 languages),
+  `Extracurriculares` (9 talleres), `Egreso` (perfil de egreso), and a rebuilt
+  `Nosotros` carrying misión, visión and the eight valores.
+- `Programa` now lists the ten áreas de aprendizaje instead of the four skills.
+  `Metodo` now presents the five metodologías, unnumbered, instead of a class
+  run-sheet.
+- The lotería board survives — it is still Spanish↔English vocabulary — but its
+  copy no longer claims the child writes the word. One- to four-year-olds do not
+  write. It is now about naming the picture in both languages.
+- Form: `edad` is 1–4, and the `experiencia` field ("¿ha estudiado inglés antes?",
+  meaningless for a two-year-old) became `grupo` — Nido / Nido 1 / Kinder 1.
+  `horario` options became Regular and Extendido, which is the real choice a
+  parent makes here. Schema, API route, form and both test files follow.
+- `Testimonios` moved from the teal background to menta so the new `Egreso`
+  section could take teal; the page still alternates cleanly.
+- `Tarjeta` gained a `relleno` prop ("normal" | "compacto") for the chip-style
+  lists. It is a prop rather than a `className` override on purpose: two padding
+  utilities in the same class list resolve by stylesheet order, not by writing
+  order, so overriding `p-6` from outside is not reliable.
+- Metadata, `whatsapp.ts` default message, `/gracias`, the privacy notice and the
+  header nav all updated off the old premise.
+
+**Three user decisions locked in this session:**
+
+1. **Prices are not on the site.** The brochure's full price list is real and
+   available, but they change every cycle and a stale price is a support burden.
+   The FAQ says the school will send the list. If this is reversed, the numbers
+   are in the 26-27 brochure — do not use the 24-25 ones.
+2. **The schedule shown is the 24-25 one** (8:30 ingreso, 9:00–13:00, extendido to
+   16:00), on the assumption it carried over. The 26-27 brochure does not restate
+   it; it only implies an extended tier via its price. Worth confirming.
+3. Marketing sources are ranked as described above — 26-27 primary, 24-25 reference.
 
 **Next up:** the user plans a **Vercel preview deploy** so the owner can watch
 progress before launch. Import `Babisimo/ceb_rainbow` at vercel.com/new; the
@@ -44,12 +91,27 @@ Two things will look broken to the owner on that preview and are not:
 
 1. The `[[MARCADORES]]` render on screen. By design — see "Before launch".
 2. The enrollment form fails with no `WEB3FORMS_ACCESS_KEY`, and its fallback
-   message points at a phone and email that are themselves still markers. Either
-   warn her off the form or set the key in Vercel *Settings › Environment
-   Variables* and redeploy — env vars do not apply to existing deployments.
+   message points at an email that is itself still a marker. Either warn her off
+   the form or set the key in Vercel *Settings › Environment Variables* and
+   redeploy — env vars do not apply to existing deployments.
 
-**Waiting on the user:** vector or transparent-PNG logo, plus a second lockup
-with the "RAINBOW" wordmark in ink or teal. See "Logo" under Deferred work.
+**Waiting on the user:**
+
+- **Does 632 112 0929 take WhatsApp?** This is the highest-value open question.
+  The brochure lists that one number and nothing says it is a WhatsApp line, so
+  `escuela.whatsapp` is deliberately still a marker. `urlWhatsApp()` returns `"#"`
+  while it is, which means the floating WhatsApp button, the hero's second CTA and
+  the Contacto button **all hide themselves** — the site currently offers no
+  WhatsApp channel at all, in a country where that is how parents contact a
+  school. One line of `site.ts` fixes it once confirmed.
+- Email address, Facebook URL, the exact age range per group, teacher names and
+  bios, real testimonials, and the legal entity for the privacy notice.
+- Vector or transparent-PNG logo, plus a second lockup with the "RAINBOW"
+  wordmark in ink or teal. See "Logo" under Deferred work.
+- Photos: the 24-25 brochure is full of real classroom photos, but they show
+  identifiable children — one is already redacted with a black dot in the source
+  file, which suggests consent is a live concern. **Do not extract and publish
+  them.** Ask the owner which photos she has permission to use.
 
 **Two repo decisions left open, both deliberate, neither urgent:**
 
@@ -80,7 +142,8 @@ src/
 │   ├── not-found.tsx
 │   └── api/inscripcion/route.ts    ← the security boundary
 ├── components/
-│   ├── sections/   Hero Beneficios Programa Metodo Nosotros
+│   ├── sections/   Hero Beneficios Grupos Programa Metodo
+│   │               Extracurriculares Egreso Nosotros
 │   │               Testimonios Preguntas Inscripcion Contacto
 │   ├── layout/     Header Footer BotonWhatsApp
 │   ├── form/       FormularioInscripcion
@@ -98,11 +161,11 @@ Sections are **zero-prop** — each reads `site` directly. Splitting the landing
 
 ### 1. Replace the `[[MARCADORES]]`
 
-Everything unknown is a visible `[[MARKER]]` in `src/content/site.ts` — **31 left**. They render on screen on purpose so the site cannot be published half-empty. Phone, WhatsApp, address, hours, socials, prices, testimonials, teacher bios, privacy-notice legal entity.
+Everything unknown is a visible `[[MARKER]]` in `src/content/site.ts` — **22 left**. They render on screen on purpose so the site cannot be published half-empty. WhatsApp confirmation, email, Facebook, Google Maps URL, hero photo alt text, per-group age ranges, teacher names and bios, testimonials, two FAQ answers (visits, required documents), and the privacy-notice legal entity.
 
-The school name is filled: **CEB Rainbow** (Centro Educativo Bilingüe Rainbow).
+Filled from the brochures: school name, address (Dr. Lanz 400, esq. 16 de Septiembre), phone (632 112 0929), Instagram (`ceb_rainbow`), hours, groups, methodologies, learning areas, extracurriculars, perfil de egreso, misión, visión, valores.
 
-**Never invent values for these.** No plausible-looking fake phone numbers or testimonials.
+**Never invent values for these.** No plausible-looking fake phone numbers or testimonials. This is also why the WhatsApp number is still a marker even though a phone number is known — "this number probably has WhatsApp" is a guess, and a wrong guess sends parents to a dead link.
 
 ### 2. Web3Forms access key
 
@@ -154,6 +217,8 @@ Confirm the email actually arrives. This is the only check that proves the chain
 
 **Form ↔ route contract.** The form must send `website` (honeypot value) and `transcurrido` (elapsed ms since mount, computed **client-side**). The route rejects a non-empty honeypot and anything under 3000ms. Do not change this to send an absolute timestamp — that was a bug: comparing the phone's clock to the server's permanently blocked any parent whose phone ran fast.
 
+**Copy comes from the brochures, not from imagination.** Every factual claim on the page — ages, hours, methodologies, what a graduate can do — traces to a line in `marketing_sources/`. If a section needs a fact that is in neither PDF, it gets a `[[MARKER]]`. The one exception already taken, on the user's instruction, is the daily schedule, which comes from the 24-25 brochure on the assumption it carried into 26-27.
+
 ---
 
 ## Design direction
@@ -172,7 +237,7 @@ Hero deliberately plays it straight: headline, subhead, two CTAs, trust row, pho
 
 ## Deferred work
 
-**English/Spanish toggle** — user asked for it "down the line", explicitly deferred. Currently ~85–90% ready: `site.ts` holds ~95% of copy. Remaining ~40 strings across 8 files: `Header.tsx` (nav labels, `aria-label`, CTA), `Footer.tsx` (section headings, prefixes), `layout.tsx` (skip link + 6 metadata strings), `gracias/page.tsx`, `not-found.tsx`, `whatsapp.ts` default message, and `schema.ts`'s `EXPERIENCIAS`/`HORARIOS` option labels (these are user-visible `<option>` text and are **not** covered by the validation-message exemption). Biggest item: `aviso-de-privacidad/page.tsx` has ~12 legal strings needing a human translator. Plumbing still needed: make `site` a function of locale (it's a flat `as const`), un-hardcode `lang="es-MX"`, add a locale route segment. Estimate ≈ 1 day plus translation turnaround.
+**English/Spanish toggle** — user asked for it "down the line", explicitly deferred. Currently ~85–90% ready: `site.ts` holds ~95% of copy. Remaining ~40 strings across 8 files: `Header.tsx` (nav labels, `aria-label`, CTA), `Footer.tsx` (section headings, prefixes), `layout.tsx` (skip link + 6 metadata strings), `gracias/page.tsx`, `not-found.tsx`, `whatsapp.ts` default message, and `schema.ts`'s `GRUPOS`/`HORARIOS` option labels (these are user-visible `<option>` text and are **not** covered by the validation-message exemption). Biggest item: `aviso-de-privacidad/page.tsx` has ~12 legal strings needing a human translator. Plumbing still needed: make `site` a function of locale (it's a flat `as const`), un-hardcode `lang="es-MX"`, add a locale route segment. Estimate ≈ 1 day plus translation turnaround.
 
 **Logo** — `marketing_sources/CEB-RAINBOW.jpeg` is the art the owner supplied. It is **not usable on the site as-is**, for two reasons:
 

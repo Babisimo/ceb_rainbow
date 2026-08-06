@@ -8,9 +8,9 @@ const valido = {
   telefono: "6321234567",
   correo: "maria@ejemplo.com",
   nino: "Sofía",
-  edad: 7,
-  experiencia: "nada",
-  horario: "tarde",
+  edad: 3,
+  grupo: "kinder1",
+  horario: "extendido",
   mensaje: "Quiero informes",
   privacidad: true,
   website: "",
@@ -61,13 +61,21 @@ describe("POST /api/inscripcion", () => {
     expect(enviado.nino).toBe("Sofía");
   });
 
-  it("envía 'No especificado' cuando experiencia y horario están ausentes", async () => {
-    const { experiencia: _e, horario: _h, ...sinOpcionales } = valido;
+  it("envía 'No especificado' cuando grupo y horario están ausentes", async () => {
+    const { grupo: _g, horario: _h, ...sinOpcionales } = valido;
     await POST(pedir(sinOpcionales));
     const llamada = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0];
     const enviado = JSON.parse(llamada[1].body as string);
-    expect(enviado.experiencia).toBe("No especificado");
+    expect(enviado.grupo).toBe("No especificado");
     expect(enviado.horario).toBe("No especificado");
+  });
+
+  it("traduce el grupo a su etiqueta antes de enviarlo", async () => {
+    await POST(pedir(valido));
+    const llamada = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    const enviado = JSON.parse(llamada[1].body as string);
+    expect(enviado.grupo).toBe("Kinder 1");
+    expect(enviado.horario).toBe("Extendido (9:00 a 16:00)");
   });
 
   it("rechaza un payload inválido con 400 y no llama a Web3Forms", async () => {

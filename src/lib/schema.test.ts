@@ -6,9 +6,9 @@ const valido = {
   telefono: "6321234567",
   correo: "maria@ejemplo.com",
   nino: "Sofía",
-  edad: 7,
-  experiencia: "nada",
-  horario: "tarde",
+  edad: 3,
+  grupo: "kinder1",
+  horario: "extendido",
   mensaje: "",
   privacidad: true,
 };
@@ -43,9 +43,9 @@ describe("inscripcionSchema", () => {
     expect(r.success).toBe(false);
   });
 
-  it("rechaza edades fuera de 4 a 12", () => {
-    expect(inscripcionSchema.safeParse({ ...valido, edad: 3 }).success).toBe(false);
-    expect(inscripcionSchema.safeParse({ ...valido, edad: 13 }).success).toBe(false);
+  it("rechaza edades fuera de 1 a 4", () => {
+    expect(inscripcionSchema.safeParse({ ...valido, edad: 0 }).success).toBe(false);
+    expect(inscripcionSchema.safeParse({ ...valido, edad: 5 }).success).toBe(false);
   });
 
   it("rechaza el envío sin aceptar el aviso de privacidad", () => {
@@ -82,13 +82,13 @@ describe("inscripcionSchema", () => {
     expect(r.success).toBe(true);
   });
 
-  it("acepta las edades límite 4 y 12", () => {
+  it("acepta las edades límite 1 y 4", () => {
+    expect(inscripcionSchema.safeParse({ ...valido, edad: 1 }).success).toBe(true);
     expect(inscripcionSchema.safeParse({ ...valido, edad: 4 }).success).toBe(true);
-    expect(inscripcionSchema.safeParse({ ...valido, edad: 12 }).success).toBe(true);
   });
 
   it("rechaza la edad enviada como texto", () => {
-    const r = inscripcionSchema.safeParse({ ...valido, edad: "7" });
+    const r = inscripcionSchema.safeParse({ ...valido, edad: "3" });
     expect(r.success).toBe(false);
   });
 
@@ -103,10 +103,10 @@ describe("inscripcionSchema", () => {
     }
   });
 
-  it("acepta experiencia vacía y la convierte en undefined", () => {
-    const r = inscripcionSchema.safeParse({ ...valido, experiencia: "" });
+  it("acepta grupo vacío y lo convierte en undefined", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, grupo: "" });
     expect(r.success).toBe(true);
-    if (r.success) expect(r.data.experiencia).toBeUndefined();
+    if (r.success) expect(r.data.grupo).toBeUndefined();
   });
 
   it("acepta horario vacío y lo convierte en undefined", () => {
@@ -115,17 +115,17 @@ describe("inscripcionSchema", () => {
     if (r.success) expect(r.data.horario).toBeUndefined();
   });
 
-  it("acepta experiencia y horario ausentes (undefined)", () => {
-    const r = inscripcionSchema.safeParse({ ...valido, experiencia: undefined, horario: undefined });
+  it("acepta grupo y horario ausentes (undefined)", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, grupo: undefined, horario: undefined });
     expect(r.success).toBe(true);
     if (r.success) {
-      expect(r.data.experiencia).toBeUndefined();
+      expect(r.data.grupo).toBeUndefined();
       expect(r.data.horario).toBeUndefined();
     }
   });
 
-  it("rechaza un valor de experiencia que no existe en el catálogo", () => {
-    const r = inscripcionSchema.safeParse({ ...valido, experiencia: "basura" });
+  it("rechaza un valor de grupo que no existe en el catálogo", () => {
+    const r = inscripcionSchema.safeParse({ ...valido, grupo: "basura" });
     expect(r.success).toBe(false);
     if (!r.success) {
       expect(r.error.issues[0].message).toMatch(/opción válida/i);

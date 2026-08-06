@@ -8,7 +8,7 @@ export function Programa() {
   return (
     <Seccion
       id="programa"
-      fondo="crema"
+      fondo="menta"
       eyebrow={programa.eyebrow}
       titulo={programa.titulo}
     >
@@ -16,14 +16,13 @@ export function Programa() {
         {programa.texto}
       </p>
 
-      {/* Las cuatro habilidades. Esto es lo que un papá quiere saber:
-          qué va a poder hacer su hijo que hoy no puede. */}
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {programa.habilidades.map((h) => (
-          <li key={h.titulo}>
-            <Tarjeta className="h-full">
-              <h3 className="text-xl">{h.titulo}</h3>
-              <p className="mt-2 leading-relaxed">{h.texto}</p>
+      {/* Conjunto sin orden: sin numerar. Las áreas se cruzan entre sí, no se
+          cursan una tras otra. */}
+      <ul className="flex flex-wrap gap-3">
+        {programa.areas.map((a) => (
+          <li key={a}>
+            <Tarjeta relleno="compacto">
+              <span className="font-titulo text-lg font-semibold">{a}</span>
             </Tarjeta>
           </li>
         ))}

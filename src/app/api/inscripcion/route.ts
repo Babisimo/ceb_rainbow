@@ -1,4 +1,4 @@
-import { EXPERIENCIAS, HORARIOS, inscripcionSchema } from "@/lib/schema";
+import { GRUPOS, HORARIOS, inscripcionSchema } from "@/lib/schema";
 
 /** Un humano no llena este formulario en menos de 3 segundos. Un bot sí. */
 const MS_MINIMOS = 3000;
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
         correo: d.correo,
         nino: d.nino,
         edad: String(d.edad),
-        experiencia: etiqueta(EXPERIENCIAS, d.experiencia),
+        grupo: etiqueta(GRUPOS, d.grupo),
         horario: etiqueta(HORARIOS, d.horario),
         mensaje: d.mensaje || "Sin mensaje",
       }),
